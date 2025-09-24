@@ -165,15 +165,15 @@ pub fn expand_input<'a>(
 
             // Check SQLX_OFFLINE_DIR, then local .sqlx, then workspace .sqlx.
             let dirs = [
-                |meta: &Metadata| meta.offline_dir.as_deref().map(PathBuf::from),
-                |meta: &Metadata| Some(meta.manifest_dir.join(".sqlx")),
-                |meta: &Metadata| Some(meta.workspace_root().join(".sqlx")),
+                |meta: &Metadata| dbg!(meta.offline_dir.as_deref().map(PathBuf::from)),
+                |meta: &Metadata| dbg!(Some(meta.manifest_dir.join(".sqlx"))),
+                |meta: &Metadata| dbg!(Some(meta.workspace_root().join(".sqlx"))),
             ];
             let Some(data_file_path) = dirs
                 .iter()
                 .filter_map(|path| path(metadata))
-                .map(|path| path.join(&filename))
-                .find(|path| path.exists())
+                .map(|path| dbg!(path.join(&filename)))
+                .find(|path| dbg!(path.exists()))
             else {
                 return Err(
                     if *offline {
